@@ -1,0 +1,9 @@
+{% if lot %}
+    <ul>
+        {% for space in lot.space_set.all %}
+            <li><a href="/parking/spaces/{{ space.id }}/reserve/">Reserve space {{space.id}}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No spaces are available in this lot.</p>
+{% endif %}
