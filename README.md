@@ -28,6 +28,16 @@ We will develop our website using Django.
 
 ## Unit Testing:
 We will use the built-in testing framework provided by Django.
+Some of the tests we will write include:
+- Testing all views to ensure they return the expected HttpResponse and pull the correct values from the database.
+- Testing the "add funds" functionality to ensure that the correct amount of money is put into the user account.
+- Testing the "add space" functionality to ensure that parking admins can add parking spaces to a lot.
+This list will be amended as functionality is added.
 
 ## System Testing:
 We will write testing procedures to run for each release.
+The test steps will be written to cover all use cases of the application. Some of these use case include:
+- Reserving a parking spot
+- Adding a parking spot
+- Adding funds
+- Cancelling a parking splot reservation
