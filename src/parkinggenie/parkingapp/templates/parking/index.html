@@ -1,9 +1,2 @@
-{% if lot_list %}
-    <ul>
-        {% for lot in lot_list %}
-            <li><a href="/parking/lots/{{ lot.id }}/"> See available spots for lot {{lot.id}}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No lots were found.</p>
-{% endif %}
+<h2>Hello, world! This is the parking genie site index.</h2>
+<a href="/parking/lots/">See all lots</a>

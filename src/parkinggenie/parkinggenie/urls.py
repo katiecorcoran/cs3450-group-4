@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from parkingapp.views import redirect_index
 
 urlpatterns = [
+    path('', redirect_index, name="redirect"),
     path('parking/', include('parkingapp.urls')),
     path('admin/', admin.site.urls),
 ]
