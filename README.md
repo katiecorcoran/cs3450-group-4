@@ -2,7 +2,8 @@
 
 ## Organization and Name Scheme:
 - All documentation will be in the docs/ directory
-- Project is still in the planning stages; our team will decide on an official naming scheme once development progresses further.
+- Out team will follow the Django directory organization and naming scheme.
+- Each template will be named according to the corresponding route.
 
 ## Version-Control:
 - Each team member will fork this repository to make changes. Once their changes are complete, they will create a pull request for the rest of the team to review. When the pull request is approved, they will merge their changes into master.
