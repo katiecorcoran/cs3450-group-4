@@ -2,7 +2,8 @@
 
 ## Organization and Name Scheme:
 - All documentation will be in the docs/ directory
-- Project is still in the planning stages; our team will decide on an official naming scheme once development progresses further.
+- Out team will follow the Django directory organization and naming scheme.
+- Each template will be named according to the corresponding route.
 
 ## Version-Control:
 - Each team member will fork this repository to make changes. Once their changes are complete, they will create a pull request for the rest of the team to review. When the pull request is approved, they will merge their changes into master.
@@ -28,6 +29,16 @@ We will develop our website using Django.
 
 ## Unit Testing:
 We will use the built-in testing framework provided by Django.
+Some of the tests we will write include:
+- Testing all views to ensure they return the expected HttpResponse and pull the correct values from the database.
+- Testing the "add funds" functionality to ensure that the correct amount of money is put into the user account.
+- Testing the "add space" functionality to ensure that parking admins can add parking spaces to a lot.
+This list will be amended as functionality is added.
 
 ## System Testing:
 We will write testing procedures to run for each release.
+The test steps will be written to cover all use cases of the application. Some of these use case include:
+- Reserving a parking spot
+- Adding a parking spot
+- Adding funds
+- Cancelling a parking splot reservation
