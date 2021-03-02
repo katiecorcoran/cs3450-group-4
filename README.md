@@ -11,8 +11,9 @@
 - All releases are tagged with their release number.
 
 ## Tool Stack:
-We will develop our website using Django.
-### Setup Instructions
+We will develop our website using Django. Using Django will simplify our application's database interactions and organization.
+
+## Setup Instructions
 - Clone this repository:<br>
 <code> git clone https://github.com/katiecorcoran/cs3450-group-4.git </code>
 - Navigate to the "src" directory and create a new virtual environment: (if you don't have pip installed already, you probably need to install Python on your machine)<br>
