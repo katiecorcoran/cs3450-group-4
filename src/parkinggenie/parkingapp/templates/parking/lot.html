@@ -1,3 +1,7 @@
+{% extends 'base.html' %}
+{% block title %}Lot Details{% endblock title %}
+
+{% block content %}
 {% if lot %}
     <ul>
         {% for space in lot.space_set.all %}
@@ -7,3 +11,4 @@
     {% else %}
         <p>No spaces are available in this lot.</p>
 {% endif %}
+{% endblock content %}
