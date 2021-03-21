@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
+{% block additionalHeaderContent %}
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<script>
+    $(document).ready(function(){
+      var date_input=$('input[name="date"]'); //our date input has the name "date"
+      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+      var options={
+        format: 'mm/dd/yyyy',
+        container: container,
+        todayHighlight: true,
+        autoclose: true,
+      };
+      date_input.datepicker(options);
+    })
+</script>
+{% endblock additionalHeaderContent%}
+{% block content %}
+
+<div class="container">
+<form>
+    <div class="form-group">
+        <label for="lot">Lot</label>
+        <input type="text" readonly class="form-control" id="lot" value="{{lot.location}} ({{lot.nickname}})">
+    </div>
+    <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" class="form-control" id="fullName" placeholder="First Last">
+    </div>
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter Email">
+    </div>
+    <div class="form-group">
+        <label for="licenseNo">License Plate Number</label>
+        <input type="text" class="form-control" id="licenseNo" placeholder="XXXXXXX">
+    </div>
+    <div class="form-group"> <!-- Date input -->
+        <label class="control-label" for="date">Date</label>
+        <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
+    </div>
+</form>
+</div>
+
+{% endblock content %}
