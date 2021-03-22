@@ -11,12 +11,12 @@ def index(request):
     context = {}
     return render(request, 'parking/index.html')
 
-def reserve_space(request, lot_id):
+def reserve_space(request, lot_id, space_type):
     try:
         lot = Lot.objects.get(pk=lot_id)
     except Lot.DoesNotExist:
         raise Http404("Space %s does not exist." % lot_id)
-    context = {'lot': lot}
+    context = {'lot': lot, 'space_type': space_type}
     return render(request, 'parking/reserveSpace.html', context)
 
 def lots(request):

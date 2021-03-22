@@ -15,12 +15,12 @@
     </div>
     <div style="margin-top: 100px" class="col-sm">
         {% if lot.available_spaces > 0 %}
-            <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block">Reserve Standard Space</button></div>
+            <div style="padding: 20px"class="row"><a href="std/reserve/" role="button" class="btn btn-primary btn-block">Reserve Standard Space</a></div>
         {% else %}
             <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block" disabled>Reserve Standard Space SOLD OUT</button></div>
         {% endif %}
         {% if lot.available_spaces_lrg > 0 %}
-            <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block">Reserve Large Space</button></div>
+            <div style="padding: 20px"class="row"><a href="lrg/reserve/" role="button" class="btn btn-primary btn-block">Reserve Large Space</a></div>
         {% else %}
             <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block" disabled>Reserve Large Space SOLD OUT</button></div>
         {% endif %}
