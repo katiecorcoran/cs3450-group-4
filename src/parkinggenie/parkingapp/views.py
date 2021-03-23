@@ -2,6 +2,9 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> db387b1f9bd913be0e1a144cb35b96b3a6205641
 from .forms import TotalSpaces
 from .models import Space, Lot
 =======
