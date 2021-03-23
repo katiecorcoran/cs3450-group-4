@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import Space, Lot
+from .models import Lot
 
 def redirect_index(request):
     response = redirect('/parking/')
@@ -11,11 +11,13 @@ def index(request):
     context = {}
     return render(request, 'parking/index.html')
 
-def spaces(request, lot_id):
-    return HttpResponse("You're viewing spaces in lot %s." % lot_id)
-
-def reserve_space(request, space_id):
-    return HttpResponse("You're trying to reserve space %s." % space_id)
+def reserve_space(request, lot_id, space_type):
+    try:
+        lot = Lot.objects.get(pk=lot_id)
+    except Lot.DoesNotExist:
+        raise Http404("Space %s does not exist." % lot_id)
+    context = {'lot': lot, 'space_type': space_type}
+    return render(request, 'parking/reserveSpace.html', context)
 
 def lots(request):
     all_lots = Lot.objects.order_by('id')
@@ -25,7 +27,6 @@ def lots(request):
 def lot(request, lot_id):
     try:
         lot = Lot.objects.get(pk=lot_id)
-        lot_spaces = Space.objects.filter(lot=lot_id)
     except Lot.DoesNotExist:
         raise Http404("Lot %s does not exist." % lot_id)
     context = {'lot': lot}

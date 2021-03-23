@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title %}
+{% block additionalHeaderContent %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css"/>
+{% endblock additionalHeaderContent%}
+{% block content %}
+
+<div class="container">
+<form method="post">
+    <div class="form-group">
+        <label for="lot">Lot</label>
+        <input type="text" readonly class="form-control" id="lot" value="{{lot.location}} ({{lot.nickname}})">
+    </div>
+    <div class="form-group">
+        <label for="type">Space Type</label>
+        <select class="form-control" id="type">
+            {% if space_type == "std"%}
+                <option value='std' selected>Standard</option>
+                <option value='lrg'>Large</option>
+            {% else %}
+                <option value='std'>Standard</option>
+                <option value='lrg' selected>Large</option>
+            {% endif %}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input type="text" class="form-control" id="fullName" placeholder="First Last">
+    </div>
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter Email">
+    </div>
+    <div class="form-group">
+        <label for="licenseNo">License Plate Number</label>
+        <input type="text" class="form-control" id="licenseNo" placeholder="XXXXXXX">
+    </div>
+    <div class="form-group"> <!-- Date input -->
+        <label class="control-label" for="date">Date</label>
+        <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text"/>
+    </div>
+    <div class="form-group"> <!-- Submit button -->
+        <button class="btn btn-primary " name="submit" type="submit">Submit</button>
+    </div>
+</form>
+</div>
+
+
+<script>
+    $("#date").datepicker();
+</script>
+
+{% endblock content %}

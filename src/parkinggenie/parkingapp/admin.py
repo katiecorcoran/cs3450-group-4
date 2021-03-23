@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from .models import Lot, Space
+from .models import Lot
 
 admin.site.register(Lot)
-admin.site.register(Space)

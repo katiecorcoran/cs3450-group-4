@@ -3,18 +3,21 @@
 
 {% block content %}
 <div class="container-fluid">
+<h2 class="title-heading">Available Lots</h2>
     {% if lot_list %}
             <table class="table table-condensed">
                 <thead>
                     <tr>
                         <th>Lot</th>
+                        <th>Location</th>
                         <th>Available Spots</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for lot in lot_list %}
                     <tr>
-                        <td><a href="/parking/lots/{{ lot.id }}/"> Lot {{lot.id}}</a></td>
+                        <td><a href="/parking/lots/{{ lot.id }}/">{{lot.nickname}}</a></td>
+                        <td>{{lot.location}} </td>
                         <td>{{ lot.available_spaces }}</td>
                     </tr> 
                 {% endfor %}

@@ -1,14 +1,50 @@
 {% extends 'base.html' %}
 {% block title %}Lot Details{% endblock title %}
-
+{% block additionalHeaderContent %}
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+<script src='https://unpkg.com/mapbox@1.0.0-beta7/dist/mapbox-sdk.min.js'></script>
+{% endblock additionalHeaderContent%}
 {% block content %}
-{% if lot %}
-    <ul>
-        {% for space in lot.space_set.all %}
-            <li><a href="/parking/spaces/{{ space.id }}/reserve/">Reserve space {{space.id}}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No spaces are available in this lot.</p>
-{% endif %}
+<div class="container">
+    <div class="row">
+    <div class="col-sm">
+        <h2 class="title-heading">{{lot.nickname}}</h2>
+        <div id='map' style='width: 400px; height: 300px;'></div>
+        <p>*Location is approximate</p>
+    </div>
+    <div style="margin-top: 100px" class="col-sm">
+        {% if lot.available_spaces > 0 %}
+            <div style="padding: 20px"class="row"><a href="std/reserve/" role="button" class="btn btn-primary btn-block">Reserve Standard Space</a></div>
+        {% else %}
+            <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block" disabled>Reserve Standard Space SOLD OUT</button></div>
+        {% endif %}
+        {% if lot.available_spaces_lrg > 0 %}
+            <div style="padding: 20px"class="row"><a href="lrg/reserve/" role="button" class="btn btn-primary btn-block">Reserve Large Space</a></div>
+        {% else %}
+            <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block" disabled>Reserve Large Space SOLD OUT</button></div>
+        {% endif %}
+    </div>
+    </div>
+</div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoia2F0aWVjb3Jjb3JhbiIsImEiOiJja21pZzRobnQwaDVtMnBsODRycXN2MDNvIn0.lh5_0Y1SMmVeNv7IQRCY7A';
+    var query = "{{ lot.location }}";
+    console.log(query);
+    var mapboxClient = new MapboxClient(mapboxgl.accessToken);
+    mapboxClient.geocodeForward(query, { limit: 1}, function(err, res) {
+        var queryCoords = res.features[0].geometry.coordinates;
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: queryCoords,
+            zoom: 14
+        });
+
+        new mapboxgl.Marker()
+            .setLngLat(queryCoords)
+            .addTo(map);
+    });
+</script>
 {% endblock content %}
