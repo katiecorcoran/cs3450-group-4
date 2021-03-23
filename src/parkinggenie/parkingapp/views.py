@@ -1,8 +1,15 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> db387b1f9bd913be0e1a144cb35b96b3a6205641
 from .forms import TotalSpaces
 from .models import Space, Lot
+=======
+from .models import Lot
+>>>>>>> 58f5834dc04294ff29adba67307ae90f29a84597
 
 def redirect_index(request):
     response = redirect('/parking/')
@@ -12,11 +19,13 @@ def index(request):
     context = {}
     return render(request, 'parking/index.html')
 
-def spaces(request, lot_id):
-    return HttpResponse("You're viewing spaces in lot %s." % lot_id)
-
-def reserve_space(request, space_id):
-    return HttpResponse("You're trying to reserve space %s." % space_id)
+def reserve_space(request, lot_id, space_type):
+    try:
+        lot = Lot.objects.get(pk=lot_id)
+    except Lot.DoesNotExist:
+        raise Http404("Space %s does not exist." % lot_id)
+    context = {'lot': lot, 'space_type': space_type}
+    return render(request, 'parking/reserveSpace.html', context)
 
 def lots(request):
     all_lots = Lot.objects.order_by('id')
@@ -26,7 +35,6 @@ def lots(request):
 def lot(request, lot_id):
     try:
         lot = Lot.objects.get(pk=lot_id)
-        lot_spaces = Space.objects.filter(lot=lot_id)
     except Lot.DoesNotExist:
         raise Http404("Lot %s does not exist." % lot_id)
     context = {'lot': lot}
