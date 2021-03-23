@@ -1,7 +1,7 @@
-<form action="/parking/owner/" method="post">
+
+
+<form action="/parking/owner/addinglot/" method="post">
     {% csrf_token %}
-     <label for="your_name">Your name: </label>
-    <input id="your_name" type="text" name="your_name" value="{{ current_name }}">
     {{ form }}
     <input type="submit" value="Submit">
 </form>

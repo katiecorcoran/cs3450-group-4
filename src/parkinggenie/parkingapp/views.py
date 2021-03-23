@@ -34,7 +34,8 @@ def lot(request, lot_id):
 
 def owner(request):
     context = {}
-    return render(request,'parking/owner.html')
+    form = TotalSpaces()
+    return render(request, 'parking/owner.html', {'form': form})
 
 
 def get_TotalSpaces(request):
@@ -45,15 +46,20 @@ def get_TotalSpaces(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            # ...
+            obj = Lot()
+            obj.total_spaces = form.cleaned_data["total_spaces"]
+            obj.save()
+
             # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+            return HttpResponseRedirect('/parking')
+
+
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = TotalSpaces()
 
-    return render(request, 'parking/owner.html', {'form': form})
-def addingspace(request):
-    new_lot = lot (total_spaces="0", available_spaces="0" , reserved_spaces="0")
-    new_lot.save()
+    return HttpResponseRedirect('/parking')
+
+
+
