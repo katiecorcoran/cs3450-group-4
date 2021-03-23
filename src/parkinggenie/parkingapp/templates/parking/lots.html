@@ -10,15 +10,21 @@
                     <tr>
                         <th>Lot</th>
                         <th>Location</th>
-                        <th>Available Spots</th>
+                        <th>Available Spaces</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for lot in lot_list %}
                     <tr>
-                        <td><a href="/parking/lots/{{ lot.id }}/">{{lot.nickname}}</a></td>
+                        <td><a href="/parking/lots/{{ lot.id }}/">
+                        {% if lot.nickname != "" %}
+                            {{lot.nickname}}
+                        {% else %}
+                            Lot {{lot.id}}
+                        {%endif%}
+                        </a></td>
                         <td>{{lot.location}} </td>
-                        <td>{{ lot.available_spaces }}</td>
+                        <td>{{lot.available_spaces | add:lot.available_spaces_lrg}}</td>
                     </tr> 
                 {% endfor %}
                 </tbody>

@@ -1,15 +1,13 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import CreateView
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> db387b1f9bd913be0e1a144cb35b96b3a6205641
 from .forms import TotalSpaces
-from .models import Space, Lot
-=======
 from .models import Lot
->>>>>>> 58f5834dc04294ff29adba67307ae90f29a84597
+
+class LotCreateView(CreateView):
+    model = Lot
+    fields = ('nickname', 'location', 'available_spaces', 'available_spaces_lrg')
 
 def redirect_index(request):
     response = redirect('/parking/')
@@ -44,7 +42,6 @@ def owner(request):
     context = {}
     form = TotalSpaces()
     return render(request, 'parking/owner.html', {'form': form})
-
 
 def get_TotalSpaces(request):
     # if this is a POST request we need to process the form data
