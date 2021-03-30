@@ -53,6 +53,7 @@ def get_TotalSpaces(request):
             # process the data in form.cleaned_data as required
             obj = Lot()
             obj.total_spaces = form.cleaned_data["total_spaces"]
+            obj.available_spaces = form.cleaned_data["total_spaces"]
             obj.save()
 
             # redirect to a new URL:
