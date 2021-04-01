@@ -1,13 +1,35 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
+from django import forms
 
 from .forms import TotalSpaces
-from .models import Lot
+from .models import Lot, Reservation
 
-class LotCreateView(CreateView):
-    model = Lot
-    fields = ('nickname', 'location', 'available_spaces', 'available_spaces_lrg')
+class ReservationCreateView(CreateView):
+    model = Reservation
+    fields = ('name', 'email', 'license_plate', 'date')
+
+    def form_valid(self, form):
+        lot = get_object_or_404(Lot, pk=self.kwargs['lot_id'])
+        form.instance.lot = lot
+        return super().form_valid(form)
+
+    def get_form(self, form_class=None):
+        form = super(ReservationCreateView, self).get_form(form_class)
+        form.fields['name'].widget.attrs.update({'placeholder': 'First Last'})
+        form.fields['email'].widget.attrs.update({'placeholder': 'Enter Email'})
+        form.fields['license_plate'].widget.attrs.update({'placeholder': 'XXXXXXX'})
+        form.fields['date'].widget = forms.DateInput(format='%d/%m/%Y')
+        form.fields['date'].widget.attrs.update({'id': 'date', 'placeholder': 'MM/DD/YYYY'})
+        return form
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ReservationCreateView, self).get_context_data(**kwargs)
+        lot = Lot.objects.get(pk=self.kwargs['lot_id'])
+        ctx['lot'] = lot
+        ctx['space_type'] = self.kwargs['space_type']
+        return ctx
 
 def redirect_index(request):
     response = redirect('/parking/')
