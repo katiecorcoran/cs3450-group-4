@@ -1,23 +1,20 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
+from django import forms
 
 from django import forms
 from django.urls import reverse
 
 from .forms import TotalSpaces
-from .models import Lot
-
-from .forms import TotalSpaces
 from .models import Lot, Reservation
-
 
 class ReservationCreateView(CreateView):
     model = Reservation
     fields = ('name', 'email', 'license_plate', 'date')
-    
+
     def form_valid(self, form):
-        lot = get_object_or_404(Lot, pk=self.kwargs['pk'])
+        lot = get_object_or_404(Lot, pk=self.kwargs['lot_id'])
         form.instance.lot = lot
         return super().form_valid(form)
 
