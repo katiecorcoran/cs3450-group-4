@@ -14,7 +14,7 @@ class ReservationCreateView(CreateView):
     fields = ('name', 'email', 'license_plate', 'date')
 
     def form_valid(self, form):
-        lot = get_object_or_404(Lot, pk=self.kwargs['lot_id'])
+        lot = get_object_or_404(Lot, pk=self.kwargs['pk'])
         form.instance.lot = lot
         return super().form_valid(form)
 
