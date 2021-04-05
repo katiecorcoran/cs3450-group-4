@@ -17,7 +17,8 @@ We will develop our website using Django. Using Django will simplify our applica
 - Clone this repository:<br>
 <code> git clone https://github.com/katiecorcoran/cs3450-group-4.git </code>
 - Navigate to the "src" directory and create a new virtual environment: (if you don't have pip installed already, you probably need to install Python on your machine)<br>
-<code> pipenv install django~=3.1.0 </code>
+<code> pipenv shell </code><br>
+<code> pip install -r requirements.txt </code>
 
 ## Build Instructions:
 - If you have not set up the virtual environment already, follow the setup instructions above.
