@@ -3,14 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
 from django.contrib.auth.models import User
 
-rom django import forms
+from django import forms
 
 from .forms import TotalSpaces, SignUp
 from .models import Lot, Reservation
-
-class LotCreateView(CreateView):
-    model = Lot
-    fields = ('nickname', 'location', 'available_spaces', 'available_spaces_lrg')
 
 class ReservationCreateView(CreateView):
     model = Reservation
