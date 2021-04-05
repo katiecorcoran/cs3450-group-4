@@ -1,7 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
-from .views import LotCreateView
+from .views import ReservationCreateView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -14,4 +14,6 @@ urlpatterns = [
     path('add-lot', LotCreateView.as_view(), name='add-lot'),
     path('signup/', views.signup, name='signup'),
     path('signup/create/', views.create_Account, name='createaccount')
+    path('reservation', views.reserve_space, name='reservation'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
