@@ -12,5 +12,7 @@ urlpatterns = [
     path('owner/', views.owner, name='owner'),
     path('lots/<int:pk>/<str:space_type>/reserve/', ReservationCreateView.as_view()),
     path('reservation-success/<int:id>', views.success, name='reservation-success'),
+    path('signup/', views.signup, name='signup'),
+    path('signup/create/', views.create_Account, name='createaccount'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

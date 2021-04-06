@@ -1,6 +1,8 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
+from django.contrib.auth.models import User
+
 from django import forms
 
 from django import forms
@@ -92,5 +94,23 @@ def get_TotalSpaces(request):
 
     return HttpResponseRedirect('/parking')
 
+def signup(request):
+    context = {}
+    form = SignUp()
+    return render(request, 'registration/signup.html', {'form': form})
 
+def create_Account(request):
+    if request.method == 'POST':
+        form = SignUp(request.POST)
+        if form.is_valid():
+            #adds the user into the database
+
+            user = User.objects.create_user(username=form.cleaned_data["username"],
+                                            first_name=form.cleaned_data["first_name"],
+                                            last_name=form.cleaned_data["last_name"],
+                                            email=form.cleaned_data["email"],
+                                            password=form.cleaned_data["password"])
+            user.save()
+            #returns the user to the login page after making an account
+            return HttpResponseRedirect('/accounts/login/')
 
