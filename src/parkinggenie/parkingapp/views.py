@@ -5,7 +5,10 @@ from django.contrib.auth.models import User
 
 from django import forms
 
-from .forms import TotalSpaces, SignUp
+from django import forms
+from django.urls import reverse
+
+from .forms import TotalSpaces
 from .models import Lot, Reservation
 
 class ReservationCreateView(CreateView):
@@ -13,7 +16,7 @@ class ReservationCreateView(CreateView):
     fields = ('name', 'email', 'license_plate', 'date')
 
     def form_valid(self, form):
-        lot = get_object_or_404(Lot, pk=self.kwargs['lot_id'])
+        lot = get_object_or_404(Lot, pk=self.kwargs['pk'])
         form.instance.lot = lot
         return super().form_valid(form)
 
@@ -28,10 +31,13 @@ class ReservationCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(ReservationCreateView, self).get_context_data(**kwargs)
-        lot = Lot.objects.get(pk=self.kwargs['lot_id'])
+        lot = Lot.objects.get(pk=self.kwargs['pk'])
         ctx['lot'] = lot
         ctx['space_type'] = self.kwargs['space_type']
         return ctx
+
+    def get_success_url(self):
+        return reverse('reservation-success', kwargs={'id': self.object.id})
 
 def redirect_index(request):
     response = redirect('/parking/')
@@ -41,13 +47,11 @@ def index(request):
     context = {}
     return render(request, 'parking/index.html')
 
-def reserve_space(request, lot_id, space_type):
-    try:
-        lot = Lot.objects.get(pk=lot_id)
-    except Lot.DoesNotExist:
-        raise Http404("Space %s does not exist." % lot_id)
-    context = {'lot': lot, 'space_type': space_type}
-    return render(request, 'parking/reserveSpace.html', context)
+def success(request, id):
+    reservation = get_object_or_404(Reservation, pk=id)
+    lot = get_object_or_404(Lot, pk=reservation.lot_id)
+    context = {'reservation': reservation, 'lot': lot}
+    return render(request, 'parking/reserveSuccess.html', context)
 
 def lots(request):
     all_lots = Lot.objects.order_by('id')

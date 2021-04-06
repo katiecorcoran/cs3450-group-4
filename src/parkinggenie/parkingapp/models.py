@@ -8,6 +8,7 @@ class Lot(models.Model):
     reserved_spaces = models.IntegerField(default=0)
     location = models.CharField(default='', max_length=10000)
     nickname = models.CharField(default='', max_length=10000)
+    price = models.IntegerField(default=0)
 
 class Reservation(models.Model):
     lot = models.ForeignKey("Lot", on_delete=models.CASCADE)
@@ -15,7 +16,4 @@ class Reservation(models.Model):
     email = models.EmailField(max_length=254)
     date = models.DateField()
     license_plate = models.CharField(default='', max_length=8)
-
-    def get_absolute_url(self):
-        return reverse('index')
 
