@@ -2,7 +2,6 @@ venv
 .DS_Store
 .vscode
 db.sqlite3
-__pycahce__
+__pycache__
 *.pyc
 *.zip
-
