@@ -12,7 +12,7 @@ class Lot(models.Model):
 
 class Reservation(models.Model):
     lot = models.ForeignKey("Lot", on_delete=models.CASCADE)
-    name = models.CharField(default='',max_length=100)
+    name = models.CharField(default='', max_length=100)
     email = models.EmailField(max_length=254)
     date = models.DateField()
     license_plate = models.CharField(default='', max_length=8)
