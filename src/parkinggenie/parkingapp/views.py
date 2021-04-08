@@ -108,5 +108,5 @@ def create_Account(request):
                                             password=form.cleaned_data["password"])
             user.save()
             #returns the user to the login page after making an account
-            return HttpResponseRedirect('/accounts/login/')
+    return HttpResponseRedirect('/parking/accounts/login/')
 
