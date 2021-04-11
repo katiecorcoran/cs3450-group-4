@@ -9,14 +9,14 @@ from django import forms
 from django.urls import reverse
 
 from .forms import TotalSpaces
-from .models import Lot, Reservation
+from .models import EventSpaces, Reservation, Event
 
 class ReservationCreateView(CreateView):
     model = Reservation
     fields = ('name', 'email', 'license_plate', 'date')
 
     def form_valid(self, form):
-        lot = get_object_or_404(Lot, pk=self.kwargs['pk'])
+        lot = get_object_or_404(EventSpaces, pk=self.kwargs['pk'])
         form.instance.lot = lot
         return super().form_valid(form)
 
@@ -31,7 +31,7 @@ class ReservationCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         ctx = super(ReservationCreateView, self).get_context_data(**kwargs)
-        lot = Lot.objects.get(pk=self.kwargs['pk'])
+        lot = EventSpaces.objects.get(pk=self.kwargs['pk'])
         ctx['lot'] = lot
         ctx['space_type'] = self.kwargs['space_type']
         return ctx
@@ -49,19 +49,25 @@ def index(request):
 
 def success(request, id):
     reservation = get_object_or_404(Reservation, pk=id)
-    lot = get_object_or_404(Lot, pk=reservation.lot_id)
+    lot = get_object_or_404(EventSpaces, pk=reservation.lot_id)
     context = {'reservation': reservation, 'lot': lot}
     return render(request, 'parking/reserveSuccess.html', context)
 
-def lots(request):
-    all_lots = Lot.objects.order_by('id')
+def lots(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    all_lots = event.eventspaces_set.all()
     context = {'lot_list': all_lots}
     return render(request, 'parking/lots.html', context)
 
+def events(request):
+    all_events = Event.objects.order_by('date')
+    context = {'event_list': all_events}
+    return render(request, 'parking/events.html', context)
+
 def lot(request, lot_id):
     try:
-        lot = Lot.objects.get(pk=lot_id)
-    except Lot.DoesNotExist:
+        lot = EventSpaces.objects.get(pk=lot_id)
+    except EventSpaces.DoesNotExist:
         raise Http404("Lot %s does not exist." % lot_id)
     context = {'lot': lot}
     return render(request, 'parking/lot.html', context)
@@ -79,7 +85,7 @@ def get_TotalSpaces(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            obj = Lot()
+            obj = EventSpaces()
             obj.total_spaces = form.cleaned_data["total_spaces"]
             obj.save()
 
