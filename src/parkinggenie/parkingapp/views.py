@@ -10,14 +10,14 @@ from django import forms
 from django.urls import reverse
 
 from .forms import TotalSpaces, SignUp
-from .models import Lot, Reservation
+from .models import EventSpaces, Reservation, Event
 
 class ReservationCreateView(CreateView):
     model = Reservation
-    fields = ('name', 'email', 'license_plate', 'date')
+    fields = ('name', 'email', 'license_plate')
 
     def form_valid(self, form):
-        lot = get_object_or_404(Lot, pk=self.kwargs['pk'])
+        lot = get_object_or_404(EventSpaces, pk=self.kwargs['pk'])
         form.instance.lot = lot
         return super().form_valid(form)
 
@@ -26,15 +26,14 @@ class ReservationCreateView(CreateView):
         form.fields['name'].widget.attrs.update({'placeholder': 'First Last'})
         form.fields['email'].widget.attrs.update({'placeholder': 'Enter Email'})
         form.fields['license_plate'].widget.attrs.update({'placeholder': 'XXXXXXX'})
-        form.fields['date'].widget = forms.DateInput(format='%d/%m/%Y')
-        form.fields['date'].widget.attrs.update({'id': 'date', 'placeholder': 'MM/DD/YYYY'})
         return form
 
     def get_context_data(self, **kwargs):
         ctx = super(ReservationCreateView, self).get_context_data(**kwargs)
-        lot = Lot.objects.get(pk=self.kwargs['pk'])
+        lot = EventSpaces.objects.get(pk=self.kwargs['pk'])
         ctx['lot'] = lot
         ctx['space_type'] = self.kwargs['space_type']
+        ctx['event'] = lot.Event
         return ctx
 
     def get_success_url(self):
@@ -50,19 +49,25 @@ def index(request):
 
 def success(request, id):
     reservation = get_object_or_404(Reservation, pk=id)
-    lot = get_object_or_404(Lot, pk=reservation.lot_id)
-    context = {'reservation': reservation, 'lot': lot}
+    lot = get_object_or_404(EventSpaces, pk=reservation.lot_id)
+    context = {'reservation': reservation, 'lot': lot, 'event': lot.Event}
     return render(request, 'parking/reserveSuccess.html', context)
 
-def lots(request):
-    all_lots = Lot.objects.order_by('id')
+def lots(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    all_lots = event.eventspaces_set.all()
     context = {'lot_list': all_lots}
     return render(request, 'parking/lots.html', context)
 
+def events(request):
+    all_events = Event.objects.order_by('date')
+    context = {'event_list': all_events}
+    return render(request, 'parking/events.html', context)
+
 def lot(request, lot_id):
     try:
-        lot = Lot.objects.get(pk=lot_id)
-    except Lot.DoesNotExist:
+        lot = EventSpaces.objects.get(pk=lot_id)
+    except EventSpaces.DoesNotExist:
         raise Http404("Lot %s does not exist." % lot_id)
     context = {'lot': lot}
     return render(request, 'parking/lot.html', context)
@@ -80,11 +85,13 @@ def get_TotalSpaces(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            obj = Lot()
+            obj = EventSpaces()
             obj.available_spaces = form.cleaned_data["available_spaces"]
             obj.available_spaces_lrg = form.cleaned_data["available_spaces_lrg"]
             obj.location = form.cleaned_data["location"]
             obj.nickname = form.cleaned_data["nickname"]
+            obj.Event = form.cleaned_data["event"]
+            obj.price = form.cleaned_data["price"]
             obj.save()
 
             # redirect to a new URL:
@@ -122,4 +129,4 @@ def create_Account(request):
 @login_required(login_url='/accounts/login/')
 def profilePage(request):
     context = {'lots': []}
-    return render(request, 'parking/profile.html', context)
+    return render(request, 'registration/profile.html', context)
