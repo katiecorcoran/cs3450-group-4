@@ -14,7 +14,7 @@ from .models import EventSpaces, Reservation, Event
 
 class ReservationCreateView(CreateView):
     model = Reservation
-    fields = ('name', 'email', 'license_plate', 'date')
+    fields = ('name', 'email', 'license_plate')
 
     def form_valid(self, form):
         lot = get_object_or_404(EventSpaces, pk=self.kwargs['pk'])
@@ -26,8 +26,6 @@ class ReservationCreateView(CreateView):
         form.fields['name'].widget.attrs.update({'placeholder': 'First Last'})
         form.fields['email'].widget.attrs.update({'placeholder': 'Enter Email'})
         form.fields['license_plate'].widget.attrs.update({'placeholder': 'XXXXXXX'})
-        form.fields['date'].widget = forms.DateInput(format='%d/%m/%Y')
-        form.fields['date'].widget.attrs.update({'id': 'date', 'placeholder': 'MM/DD/YYYY'})
         return form
 
     def get_context_data(self, **kwargs):
@@ -35,6 +33,7 @@ class ReservationCreateView(CreateView):
         lot = EventSpaces.objects.get(pk=self.kwargs['pk'])
         ctx['lot'] = lot
         ctx['space_type'] = self.kwargs['space_type']
+        ctx['event'] = lot.Event
         return ctx
 
     def get_success_url(self):
@@ -51,7 +50,7 @@ def index(request):
 def success(request, id):
     reservation = get_object_or_404(Reservation, pk=id)
     lot = get_object_or_404(EventSpaces, pk=reservation.lot_id)
-    context = {'reservation': reservation, 'lot': lot}
+    context = {'reservation': reservation, 'lot': lot, 'event': lot.Event}
     return render(request, 'parking/reserveSuccess.html', context)
 
 def lots(request, event_id):
@@ -91,6 +90,8 @@ def get_TotalSpaces(request):
             obj.available_spaces_lrg = form.cleaned_data["available_spaces_lrg"]
             obj.location = form.cleaned_data["location"]
             obj.nickname = form.cleaned_data["nickname"]
+            obj.Event = form.cleaned_data["event"]
+            obj.price = form.cleaned_data["price"]
             obj.save()
 
             # redirect to a new URL:
@@ -128,4 +129,4 @@ def create_Account(request):
 @login_required(login_url='/accounts/login/')
 def profilePage(request):
     context = {'lots': []}
-    return render(request, 'parking/profile.html', context)
+    return render(request, 'registration/profile.html', context)

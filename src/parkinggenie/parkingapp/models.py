@@ -14,11 +14,13 @@ class Reservation(models.Model):
     lot = models.ForeignKey("EventSpaces", on_delete=models.CASCADE)
     name = models.CharField(default='',max_length=100)
     email = models.EmailField(max_length=254)
-    date = models.DateField()
     license_plate = models.CharField(default='', max_length=8)
 
 class Event(models.Model):
     name = models.CharField(default='',max_length=100)
     date = models.DateField()
     location = models.CharField(default='',max_length=1000)
+
+    def __str__(self):
+        return self.name
 
