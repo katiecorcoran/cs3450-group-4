@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
@@ -8,7 +9,7 @@ from django import forms
 from django import forms
 from django.urls import reverse
 
-from .forms import TotalSpaces
+from .forms import TotalSpaces, SignUp
 from .models import EventSpaces, Reservation, Event
 
 class ReservationCreateView(CreateView):
@@ -86,7 +87,10 @@ def get_TotalSpaces(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             obj = EventSpaces()
-            obj.total_spaces = form.cleaned_data["total_spaces"]
+            obj.available_spaces = form.cleaned_data["available_spaces"]
+            obj.available_spaces_lrg = form.cleaned_data["available_spaces_lrg"]
+            obj.location = form.cleaned_data["location"]
+            obj.nickname = form.cleaned_data["nickname"]
             obj.save()
 
             # redirect to a new URL:
@@ -120,3 +124,8 @@ def create_Account(request):
             #returns the user to the login page after making an account
             return HttpResponseRedirect('/accounts/login/')
 
+
+@login_required(login_url='/accounts/login/')
+def profilePage(request):
+    context = {'lots': []}
+    return render(request, 'parking/profile.html', context)
