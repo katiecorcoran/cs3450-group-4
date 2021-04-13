@@ -128,5 +128,6 @@ def create_Account(request):
 
 @login_required(login_url='/accounts/login/')
 def profilePage(request):
+    #TODO: Need to add query to send lots of user to profile.html
     context = {'lots': []}
     return render(request, 'parking/profile.html', context)
