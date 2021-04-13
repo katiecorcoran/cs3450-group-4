@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock title %}
+
+{% block content %}
+   {% if user.is_authenticated %}
+        <div class="container-fluid">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th><h1>My Lots</h1></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% if lots %}
+                            {% for lot in lots %}
+                            <tr>
+                                <td>{{ lot }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <div>
+                                <tr>
+                                    <td><h4>You have not purchased any lots yet</h4></td>
+                                </tr>
+                            </div>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+        </div>
+    {% else %}
+       <a href="{% url 'login'%}?next={{request.path}}">Login</a>
+    {% endif %}
+{% endblock content %}
