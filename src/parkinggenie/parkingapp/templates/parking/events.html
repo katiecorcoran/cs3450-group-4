@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Upcoming Events{% endblock title %}
+
+{% block content %}
+<div class="container-fluid">
+<h2 class="title-heading">Events</h2>
+    {% if event_list %}
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for event in event_list %}
+                    <tr>
+                        <td><a href="/parking/events/{{ event.id }}/">
+                        {{event.name}}
+                        </a></td>
+                        <td>{{event.location}} </td>
+                        <td>{{event.date}}</td>
+                    </tr> 
+                {% endfor %}
+                </tbody>
+            </table>
+    {% else %}
+        <p>No events were found.</p>
+    {% endif %}
+</div>
+{% endblock content %}

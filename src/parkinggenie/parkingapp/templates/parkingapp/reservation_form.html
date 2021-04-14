@@ -17,6 +17,10 @@
         <label for="lot">Lot</label>
         <input type="text" readonly class="form-control" id="lot" value="{{lot.location}} ({{lot.nickname}})">
     </div>
+    <div class="form-group">
+        <label for="event">Event</label>
+        <input type="text" readonly class="form-control" id="event" value="{{event.name}} ({{event.date}})">
+    </div>
         <div class="form-group">
         <label for="type">Space Type</label>
         <select class="form-control" id="type">
@@ -37,9 +41,5 @@
     <div class="form-group"> <!-- Submit button -->
       <button class="btn btn-primary " name="submit" type="submit">Confirm and Pay</button>
   </div>
-
-  <script>
-    $("#date").datepicker();
-</script>
 
 {% endblock %}
