@@ -128,6 +128,6 @@ def create_Account(request):
 
 @login_required(login_url='/accounts/login/')
 def profilePage(request):
-    lots = EventSpaces.objects.get(pk=request.user.id)
+    # lots = EventSpaces.objects.get(pk=request.user.id)
     context = {'lots': []}
     return render(request, 'parking/profile.html', context)
