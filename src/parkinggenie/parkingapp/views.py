@@ -105,6 +105,8 @@ def get_TotalSpaces(request):
             obj.Event = form.cleaned_data["event"]
             obj.price = form.cleaned_data["price"]
             obj.save()
+        else:
+            print(form.errors)
 
             # redirect to a new URL:
             return HttpResponseRedirect('/parking')

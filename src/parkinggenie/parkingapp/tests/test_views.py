@@ -38,7 +38,7 @@ class ViewsTestCase(TestCase):
 
         response = self.client.post(
             reverse('reserve',kwargs={'pk':spaces.id,'space_type':'std'}),
-            data={'lot': spaces, 'name': 'Jane Doe', 'email': 'noone@nowhere.com', 'license_plate': '1234567'}    
+            data={'lot': spaces, 'name': 'Jane Doe', 'email': 'noone@nowhere.com', 'license_plate': '1234567', 'space_type': 'std'}    
         )
 
         self.assertEqual(response.status_code, 302)
@@ -64,19 +64,30 @@ class ViewsTestCase(TestCase):
         response = self.client.login(username='dummy',password='dummy123')
         self.assertEqual(response, True)
 
+        response = self.client.get(reverse('profilePage'))
+        self.assertEqual(response.status_code, 200)
+
         # Add models to make a reservation
         event = Event.objects.create(name="Basketball",date=datetime.date.today(),location="Spectrum")
         event.save()
 
-        spaces = EventSpaces.objects.create(total_spaces=10,available_spaces=6,available_spaces_lrg=4,location="E 1000 N",price=5,nickname="Test Lot",Event=event)
-        spaces.save()
+        response = self.client.get(reverse('owner'))
+        self.assertEqual(response.status_code, 200)
 
+        response = self.client.post(
+            reverse('addingspace'),
+            data={'event':1,'available_spaces':6,'available_spaces_lrg':4,'location':'Location','nickname':'Test Lot','price':5}
+        )
+        
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/parking')
+
+        spaces = EventSpaces.objects.get(pk=1)
         user = User.objects.filter(username='dummy')[0]
-        print(user)
 
         response = self.client.post(
             reverse('reserve',kwargs={'pk':spaces.id,'space_type':'std'}),
-            data={'user':user,'lot': spaces, 'name': 'Jane Doe', 'email': 'noone@nowhere.com', 'license_plate': '1234567'},
+            data={'user':user,'lot': spaces, 'name': 'Jane Doe', 'email': 'noone@nowhere.com', 'license_plate': '1234567', 'space_type':'std'},
             follow=True    
         )
 
