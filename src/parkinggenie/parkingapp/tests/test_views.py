@@ -52,13 +52,37 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_user_views(self):
-        # Create dummy user
-        self.username = 'dummy'
-        self.password = 'dummy123'
-
+        # Sign up dummy user
         response = self.client.post(
             reverse('createaccount'),
             data={'username':'dummy','first_name':'Jane','last_name':'Doe','email':'noone@nowhere.com','password':'dummy123'}
         )
 
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/parking/accounts/login/')
+
+        response = self.client.login(username='dummy',password='dummy123')
+        self.assertEqual(response, True)
+
+        # Add models to make a reservation
+        event = Event.objects.create(name="Basketball",date=datetime.date.today(),location="Spectrum")
+        event.save()
+
+        spaces = EventSpaces.objects.create(total_spaces=10,available_spaces=6,available_spaces_lrg=4,location="E 1000 N",price=5,nickname="Test Lot",Event=event)
+        spaces.save()
+
+        user = User.objects.filter(username='dummy')[0]
+        print(user)
+
+        response = self.client.post(
+            reverse('reserve',kwargs={'pk':spaces.id,'space_type':'std'}),
+            data={'user':user,'lot': spaces, 'name': 'Jane Doe', 'email': 'noone@nowhere.com', 'license_plate': '1234567'},
+            follow=True    
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        savedReservation = Reservation.objects.get(pk=1)
+        self.assertEqual(savedReservation.user.id, user.id)
+
+        

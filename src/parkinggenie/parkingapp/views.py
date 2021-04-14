@@ -14,17 +14,32 @@ from .models import EventSpaces, Reservation, Event
 
 class ReservationCreateView(CreateView):
     model = Reservation
-    fields = ('name', 'email', 'license_plate')
+    fields = ('name', 'email', 'license_plate','space_type')
+
+    def get_initial(self):
+        return {'space_type': self.kwargs['space_type']}
 
     def form_valid(self, form):
         lot = get_object_or_404(EventSpaces, pk=self.kwargs['pk'])
+        print(form.instance.space_type)
+        if form.instance.space_type == "std":
+            lot.available_spaces -= 1
+        elif form.instance.space_type == "lrg":
+            lot.available_spaces_lrg -= 1
+        lot.save()
         form.instance.lot = lot
+        if self.request.user.is_authenticated:
+            form.instance.user = self.request.user
         return super().form_valid(form)
 
     def get_form(self, form_class=None):
         form = super(ReservationCreateView, self).get_form(form_class)
-        form.fields['name'].widget.attrs.update({'placeholder': 'First Last'})
-        form.fields['email'].widget.attrs.update({'placeholder': 'Enter Email'})
+        if self.request.user.is_authenticated:
+            form.fields['name'].widget.attrs.update({'value': self.request.user.first_name + " " + self.request.user.last_name})
+            form.fields['email'].widget.attrs.update({'value': self.request.user.email})
+        else:
+            form.fields['name'].widget.attrs.update({'placeholder': 'First Last'})
+            form.fields['email'].widget.attrs.update({'placeholder': 'Enter Email'})
         form.fields['license_plate'].widget.attrs.update({'placeholder': 'XXXXXXX'})
         return form
 
