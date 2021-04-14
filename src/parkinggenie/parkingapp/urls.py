@@ -8,7 +8,7 @@ urlpatterns = [
     path('events/', views.events, name='events'),
     path('events/<int:event_id>/', views.lots, name='lots'),
     path('events/lots/<int:lot_id>/', views.lot, name='lot'),
-    path('<int:pk>/<str:space_type>/reserve/', ReservationCreateView.as_view()),
+    path('<int:pk>/<str:space_type>/reserve/', ReservationCreateView.as_view(), name='reserve'),
     path('reservation-success/<int:id>', views.success, name='reservation-success'),
     path('owner/', views.owner, name='owner'),
     path('owner/addinglot/', views.get_TotalSpaces, name='addingspace'),

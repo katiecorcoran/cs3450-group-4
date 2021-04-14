@@ -54,7 +54,7 @@ def success(request, id):
     return render(request, 'parking/reserveSuccess.html', context)
 
 def lots(request, event_id):
-    event = Event.objects.get(pk=event_id)
+    event = get_object_or_404(Event,pk=event_id)
     all_lots = event.eventspaces_set.all()
     context = {'lot_list': all_lots}
     return render(request, 'parking/lots.html', context)
@@ -65,10 +65,7 @@ def events(request):
     return render(request, 'parking/events.html', context)
 
 def lot(request, lot_id):
-    try:
-        lot = EventSpaces.objects.get(pk=lot_id)
-    except EventSpaces.DoesNotExist:
-        raise Http404("Lot %s does not exist." % lot_id)
+    lot = get_object_or_404(EventSpaces,pk=lot_id)
     context = {'lot': lot}
     return render(request, 'parking/lot.html', context)
 
