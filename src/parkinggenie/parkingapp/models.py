@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 class EventSpaces(models.Model):
     total_spaces = models.IntegerField(default=0)
@@ -11,6 +12,7 @@ class EventSpaces(models.Model):
     Event = models.ForeignKey("Event", on_delete=models.CASCADE)
 
 class Reservation(models.Model):
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     lot = models.ForeignKey("EventSpaces", on_delete=models.CASCADE)
     name = models.CharField(default='',max_length=100)
     email = models.EmailField(max_length=254)

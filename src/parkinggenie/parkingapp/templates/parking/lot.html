@@ -14,7 +14,8 @@
         <p>*Location is approximate</p>
     </div>
     <div style="margin-top: 100px" class="col-sm">
-        {% if lot.available_spaces > 0 %}
+	{% if user.is_authenticated %}
+	{% if lot.available_spaces > 0 %}
             <div style="padding: 20px"class="row"><a href="/parking/{{lot.id}}/std/reserve/" role="button" class="btn btn-primary btn-block">Reserve Standard Space</a></div>
         {% else %}
             <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block" disabled>Reserve Standard Space SOLD OUT</button></div>
@@ -24,6 +25,9 @@
         {% else %}
             <div style="padding: 20px"class="row"><button type="button" class="btn btn-primary btn-block" disabled>Reserve Large Space SOLD OUT</button></div>
         {% endif %}
+	{% else %}
+	    <div style="padding: 20px"class="row"><a href="{% url 'login' %}?next={{request.path}}" role="button" class="btn btn-primary btn-block">Please Sign In to Continue</a></div>
+	{% endif %}
     </div>
     </div>
 </div>
