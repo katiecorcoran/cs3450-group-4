@@ -21,18 +21,6 @@
         <label for="event">Event</label>
         <input type="text" readonly class="form-control" id="event" value="{{event.name}} ({{event.date}})">
     </div>
-        <div class="form-group">
-        <label for="type">Space Type</label>
-        <select class="form-control" id="type">
-            {% if space_type == "std"%}
-                <option value='std' selected>Standard</option>
-                <option value='lrg'>Large</option>
-            {% else %}
-                <option value='std'>Standard</option>
-                <option value='lrg' selected>Large</option>
-            {% endif %}
-        </select>
-    </div>
   {{form|crispy}}
   <div class="form-group">
     <h6>Total:</h6>

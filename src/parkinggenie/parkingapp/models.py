@@ -16,6 +16,7 @@ class Reservation(models.Model):
     lot = models.ForeignKey("EventSpaces", on_delete=models.CASCADE)
     name = models.CharField(default='',max_length=100)
     email = models.EmailField(max_length=254)
+    space_type = models.CharField(max_length=10, choices = (('std','Standard'), ('lrg','Large')))
     license_plate = models.CharField(default='', max_length=8)
 
 class Event(models.Model):
