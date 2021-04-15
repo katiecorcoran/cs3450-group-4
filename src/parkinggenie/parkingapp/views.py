@@ -140,8 +140,11 @@ def create_Account(request):
     return HttpResponseRedirect('/parking/accounts/login/')
 
 
-@login_required(login_url='/accounts/login/')
+
 def profilePage(request):
-    # lots = EventSpaces.objects.get(pk=request.user.id)
-    context = {'lots': []}
-    return render(request, 'parking/profile.html', context)
+    if request.user.is_authenticated:
+        reservations = request.user.reservation_set.all()
+        context = {'reservations': reservations}
+        return render(request, 'parking/profile.html', context)
+    else:
+        return HttpResponseRedirect('/parking/accounts/login/')

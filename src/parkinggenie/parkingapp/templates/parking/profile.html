@@ -7,14 +7,14 @@
                     <table class="table table-condensed">
                         <thead>
                             <tr>
-                                <th><h1>My Lots</h1></th>
+                                <th><h3>Purchased Lots</h3></th>
                             </tr>
                         </thead>
                         <tbody>
-                        {% if lots %}
-                            {% for lot in lots %}
+                        {% if reservations %}
+                            {% for reservation in reservations %}
                             <tr>
-                                <td>{{ lot }}</td>
+                                <td>{{ reservation.lot.nickname }}</td>
                             </tr>
                             {% endfor %}
                         {% else %}

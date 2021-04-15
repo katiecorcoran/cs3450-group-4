@@ -4,7 +4,7 @@ from . import views
 from .views import ReservationCreateView
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.profilePage, name='index'),
     path('events/', views.events, name='events'),
     path('events/<int:event_id>/', views.lots, name='lots'),
     path('events/lots/<int:lot_id>/', views.lot, name='lot'),
