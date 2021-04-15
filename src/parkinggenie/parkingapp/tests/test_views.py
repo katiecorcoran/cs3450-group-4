@@ -10,7 +10,7 @@ from parkingapp.models import EventSpaces, Reservation, Event
 class ViewsTestCase(TestCase):
     def test_reservation_process(self):
         # Views with no arguments
-        response = self.client.get(reverse('index'))
+        response = self.client.get(reverse('index'), follow=True)
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get(reverse('events'))
