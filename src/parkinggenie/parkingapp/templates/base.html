@@ -26,20 +26,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/parking/events/">Events</a>
                 </li>
+                {% if user.is_staff %}
                 <li class="nav-item">
                     <a class="nav-link" href="/parking/owner/">Add a lot</a>
                 </li>
+                {% endif %}
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="/parking/profile/">My Lots</a>
                 </li>
-                {% endif %}
+            {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle bi bi-person-fill" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 			{% if user.is_authenticated %}
 			<a class="dropdown-item" href="">{{ user.get_username }}</a>
-			<a class="dropdown-item" href="{% url 'logout' %}?next={{request.path}}">Logout</a>
+			<a class="dropdown-item" href="{% url 'logout' %}?next=/parking/accounts/logout">Logout</a>
 			{% else %}
 			<a class="dropdown-item" href="{% url 'signup' %}">Sign Up</a>
 			<a class="dropdown-item" href="{% url 'login' %}?next={{request.path}}">Login</a>
