@@ -34,3 +34,6 @@ We used the built-in testing framework provided by Django to write unit tests fo
 
 ## System Testing:
 Testing procedures can be found in "docs/Parking-Genie-System-Test-Steps". These test steps verify user interface operations. Test 1 verifies creating a user, test 2 verifies adding a lot, and tests 3 and 4 verify the parking space reservation process.
+
+## Sprint Planning
+All sprint docs can be found in "docs/planning"
