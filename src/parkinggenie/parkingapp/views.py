@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.models import User
 
 from django import forms
@@ -10,7 +10,29 @@ from django import forms
 from django.urls import reverse
 
 from .forms import TotalSpaces, SignUp
-from .models import EventSpaces, Reservation, Event
+from .models import EventSpaces, Reservation, Event, UserAccount
+
+
+class UserAccountView(UpdateView):
+    model = UserAccount
+    fields = ('balance',)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(UserAccountView, self).get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            reservations = self.request.user.reservation_set.all()
+            ctx['reservations'] = reservations
+            ctx['currentBalance'] = self.request.user.useraccount.balance
+        return ctx
+
+    def get_form(self, form_class=None):
+        form = super(UserAccountView, self).get_form(form_class)
+        form.fields['balance'].widget.attrs.update({'step': 1.0})
+        return form
+
+    def get_success_url(self):
+        return reverse('profilePage', kwargs={'pk': self.request.user.useraccount.id})
+        
 
 class ReservationCreateView(CreateView):
     model = Reservation
@@ -21,13 +43,13 @@ class ReservationCreateView(CreateView):
 
     def form_valid(self, form):
         lot = get_object_or_404(EventSpaces, pk=self.kwargs['pk'])
-        print(form.instance.space_type)
         if form.instance.space_type == "std":
             lot.available_spaces -= 1
         elif form.instance.space_type == "lrg":
             lot.available_spaces_lrg -= 1
         lot.save()
         form.instance.lot = lot
+        form.instance.event = lot.Event
         if self.request.user.is_authenticated:
             form.instance.user = self.request.user
         return super().form_valid(form)
@@ -55,7 +77,10 @@ class ReservationCreateView(CreateView):
         return reverse('reservation-success', kwargs={'id': self.object.id})
 
 def redirect_index(request):
-    response = redirect('/parking/')
+    if (request.user.is_authenticated):
+        response = redirect('/parking/profile/{0}'.format(request.user.useraccount.id))
+    else:
+        response = redirect('/parking/accounts/login')
     return response
 
 def index(request):
@@ -136,15 +161,6 @@ def create_Account(request):
                                             email=form.cleaned_data["email"],
                                             password=form.cleaned_data["password"])
             user.save()
+            userAcct = UserAccount.objects.create(user=user)
             #returns the user to the login page after making an account
     return HttpResponseRedirect('/parking/accounts/login/')
-
-
-
-def profilePage(request):
-    if request.user.is_authenticated:
-        reservations = request.user.reservation_set.all()
-        context = {'reservations': reservations}
-        return render(request, 'parking/profile.html', context)
-    else:
-        return HttpResponseRedirect('/parking/accounts/login/')

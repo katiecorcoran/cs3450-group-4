@@ -40,7 +40,8 @@
                     <a class="nav-link dropdown-toggle bi bi-person-fill" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 			{% if user.is_authenticated %}
-			<a class="dropdown-item" href="">{{ user.get_username }}</a>
+            <p class="dropdown-item">{{ user.get_username }}</p>
+			<a class="dropdown-item" href="/parking/">Account</a>
 			<a class="dropdown-item" href="{% url 'logout' %}?next=/parking/accounts/logout">Logout</a>
 			{% else %}
 			<a class="dropdown-item" href="{% url 'signup' %}">Sign Up</a>

@@ -4,23 +4,28 @@
 {% block content %}
    {% if user.is_authenticated %}
         <div class="container-fluid">
+                    <h3>Reservations</h3>
                     <table class="table table-condensed">
                         <thead>
                             <tr>
-                                <th><h3>Purchased Lots</h3></th>
+                                <th>Event</th>
+                                <th>Lot</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody>
                         {% if reservations %}
                             {% for reservation in reservations %}
                             <tr>
+                                <td>{{ reservation.event.name }}</td>
                                 <td>{{ reservation.lot.nickname }}</td>
+                                <td>{{ reservation.event.date }}</td>
                             </tr>
                             {% endfor %}
                         {% else %}
                             <div>
                                 <tr>
-                                    <td><h4>You have not purchased any lots yet</h4></td>
+                                    <td><h4>You have not purchased any reservations yet</h4></td>
                                 </tr>
                             </div>
                             </tr>
