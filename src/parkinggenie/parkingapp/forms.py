@@ -10,6 +10,11 @@ class TotalSpaces(forms.Form):
     nickname = forms.CharField(label='Name', max_length=10000)
     price = forms.IntegerField(label='Price')
 
+class Event(forms.Form):
+    name = forms.CharField(label='Name', max_length=10000)
+    date = forms.DateField(label='Date')
+    location = forms.CharField(label='Location', max_length=10000)
+
 class SignUp(forms.Form):
     username = forms.CharField(label='Username')
     first_name = forms.CharField(label='First Name')

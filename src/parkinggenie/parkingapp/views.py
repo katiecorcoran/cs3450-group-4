@@ -9,7 +9,7 @@ from django import forms
 from django import forms
 from django.urls import reverse
 
-from .forms import TotalSpaces, SignUp
+from .forms import TotalSpaces, SignUp, Event
 from .models import EventSpaces, Reservation, Event, UserAccount
 
 
@@ -105,7 +105,7 @@ def events(request):
     return render(request, 'parking/events.html', context)
 
 def lot(request, lot_id):
-    lot = get_object_or_404(EventSpaces,pk=lot_id)
+    lot = get_object_or_404(EventSpaces, pk=lot_id)
     context = {'lot': lot}
     return render(request, 'parking/lot.html', context)
 
@@ -114,6 +114,28 @@ def owner(request):
     form = TotalSpaces()
     return render(request, 'parking/owner.html', {'form': form})
 
+def event(request):
+    context = {}
+    form = Event()
+    return render(request, 'parking/addEvent.html', {'form': form})
+
+def get_events(request):
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = event(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            obj = Event()
+            obj.name = form.cleaned_data["name"]
+            obj.date = form.cleaned_data["date"]
+            obj.location = form.cleaned_data["location"]
+
+        else:
+            print(form.errors)
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/parking')
 def get_TotalSpaces(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
