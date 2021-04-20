@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.models import User
-
+import qrcode
 from django import forms
 
 from django import forms
@@ -90,6 +90,8 @@ def index(request):
 def success(request, id):
     reservation = get_object_or_404(Reservation, pk=id)
     lot = get_object_or_404(EventSpaces, pk=reservation.lot_id)
+    img = qrcode.make(f'/parking/reservation-success/{reservation.id}')
+    img.save(f'parkingapp/static/images/confirmation.png')
     context = {'reservation': reservation, 'lot': lot, 'event': lot.Event}
     return render(request, 'parking/reserveSuccess.html', context)
 
