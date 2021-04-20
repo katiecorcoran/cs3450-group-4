@@ -14,6 +14,7 @@ class EventSpaces(models.Model):
 class Reservation(models.Model):
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
     lot = models.ForeignKey("EventSpaces", on_delete=models.CASCADE)
+    event = models.ForeignKey("Event", on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(default='',max_length=100)
     email = models.EmailField(max_length=254)
     space_type = models.CharField(max_length=10, choices = (('std','Standard'), ('lrg','Large')))
@@ -26,4 +27,8 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+class UserAccount(models.Model):
+   user = models.OneToOneField(User, on_delete=models.CASCADE)
+   balance = models.DecimalField(max_digits=6, decimal_places=2, default=0)
 
