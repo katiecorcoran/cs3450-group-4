@@ -16,4 +16,6 @@ urlpatterns = [
     path('signup/create/', views.create_Account, name='createaccount'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('profile/<int:pk>', UserAccountView.as_view(), name='profilePage'),
+    path('addEvent/', views.event, name='event'),
+    path('addEvent/addingevent/', views.get_events, name='addingevent'),
 ]
