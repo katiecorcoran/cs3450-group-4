@@ -29,6 +29,9 @@ We will develop our website using Django. Using Django will simplify our applica
 <code> python manage.py runserver </code>
 - The project will run at http://localhost:8000.
 
+## Admin Account
+To access the admin account to add events, go to http://localhost:8000 and enter the credentials: <br> Username: admin <br> Password: admin1
+
 ## Unit Testing:
 We used the built-in testing framework provided by Django to write unit tests for our application. All unit tests can be found in "src/testing". There are two files: one for testing models, and one for testing views. These unit tests verify that all models can be successfully instantiated, all views render correctly, and all post operations successfully create the required model. To run the tests, follow the build instructions above, and replace the final command with <code>python manage.py test</code>.
 
